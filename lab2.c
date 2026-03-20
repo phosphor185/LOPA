@@ -30,19 +30,20 @@ int main() {
             scanf("%Lf", &matrix2[i][j]);
         }
  }
-    for (i = 0; i < 2; i++) {
-    	for (j = 0; j < 2; j++) {
-        	matrix2[i][j] = 0;
-        	for (k = 0; k < 2; k++) {
-            	matrix2[i][j] += matrix2[i][k] * matrix2[k][j];
-        	}
-    	}
-	}
-	for (i = 0; i < 2; i++) {
-        for (j = 0; j < 2; j++) {
-            printf("%d ", matrix2[i][j]);
+for (i = 0; i < 2; i++) {
+    for (j = 0; j < 2; j++) {
+        res[i][j] = 0;
+        for (k = 0; k < 2; k++) {
+            res[i][j] += matrix2[i][k] * matrix2[k][j];
         }
     }
+}
+	
+for (i = 0; i < 2; i++) {
+    for (j = 0; j < 2; j++) {
+        printf("%.2f\t ", res[i][j]);
+    }
+}
 
 
     return 0;
