@@ -22,8 +22,8 @@ int main() {
  }
  printf("Summa pob diag: %Lf", sum2);
  
- int res[2][2];
- int matrix2[2][2];
+ double res[2][2];
+ double matrix2[2][2];
  for(i = 0; i < 2; i++) {
         for(j = 0; j < 2; j++) {
             printf("Element [%d][%d]: ", i, j);
