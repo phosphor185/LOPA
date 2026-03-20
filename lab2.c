@@ -10,6 +10,14 @@ int main() {
             scanf("%Lf", &matrix[i][j]);
         }
  }
+ printf("\n");
+ for (i = 0; i < 3; i++) {
+    for (j = 0; j < 3; j++) {
+        printf("%.2f\t ", matrix[i][j]);
+	}
+    printf("\n");
+}
+printf("\n");
  double sum = 0;
  
  for (i = 0; i < 3; i++) {
@@ -20,7 +28,9 @@ int main() {
     for (i = 0; i < 3; i++) {
         sum2 += matrix[i][2 - i];
  }
- printf("Summa pob diag: %Lf", sum2);
+ printf("\n");
+ printf("Summa pob diag: %Lf\n", sum2);
+ printf("\n");
  
  double res[2][2];
  double matrix2[2][2];
@@ -38,11 +48,24 @@ for (i = 0; i < 2; i++) {
         }
     }
 }
-	
+printf("\n");
+printf("Matritsa:");
+printf("\n");
+for (i = 0; i < 2; i++) {
+    for (j = 0; j < 2; j++) {
+        printf("%.2f\t ", matrix2[i][j]);
+	}
+    printf("\n");
+}
+
+printf("\n");
+printf("Kvadrat matritsi:");
+printf("\n");
 for (i = 0; i < 2; i++) {
     for (j = 0; j < 2; j++) {
         printf("%.2f\t ", res[i][j]);
-    }
+	}
+    printf("\n");
 }
 
 
