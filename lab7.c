@@ -21,21 +21,22 @@ int main() {
     humen temp;
     int i, j;
     int count = 0;
-    int HRANILISHE = 4;
+    int n = 4;
     char qwename[20], qwesurname[20];
     int qweyear;
 
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "Russian");
 
     f = fopen("data.txt", "r");
 
-    arr1 = (humen*)malloc(HRANILISHE * sizeof(humen));
+    arr1 = (humen*)malloc(n * sizeof(humen));
     
     while (fscanf(f, "%19s %19s %d", qwename, qwesurname, &qweyear) == 3) {
         if (count == HRANILISHE) {
             HRANILISHE *= 2;
-            arr1 = (humen*)realloc(arr1, HRANILISHE * sizeof(humen));
+            arr1 = (humen*)realloc(arr1, n * sizeof(humen));
         }
+        
         strncpy(arr1[count].name, qwename, 19);
         arr1[count].name[19] = '\0';
         strncpy(arr1[count].surname, qwesurname, 19);
@@ -58,7 +59,7 @@ int main() {
             }        }
     }
 
-    printf("\nРезультат:\n", count);
+    printf("\nÐåçóëüòàò:\n", count);
     printf("----------------------------------------\n");
     for (i = 0; i < count; i++) {
         printf("%-15s %-15s %d\n", arr2[i].name, arr2[i].surname, arr2[i].birth_year);
@@ -68,7 +69,7 @@ int main() {
     free(arr2);
 
     while (getchar() != '\n');
-    printf("\nдля закрытия нажмие энтер ок...");
+    printf("\näëÿ çàêðûòèÿ íàæìèå ýíòåð îê...");
     getchar();
 
     return 0;
