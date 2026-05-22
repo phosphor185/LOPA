@@ -32,8 +32,8 @@ int main() {
     arr1 = (humen*)malloc(n * sizeof(humen));
     
     while (fscanf(f, "%19s %19s %d", qwename, qwesurname, &qweyear) == 3) {
-        if (count == HRANILISHE) {
-            HRANILISHE *= 2;
+        if (count == n) {
+            n *= 2;
             arr1 = (humen*)realloc(arr1, n * sizeof(humen));
         }
         
