@@ -1,7 +1,12 @@
 #include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <locale.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 typedef struct {
     char name[50];
@@ -10,73 +15,66 @@ typedef struct {
 } humen;
 
 int main() {
-    setlocale(LC_ALL, ""); // Корректная локаль для вывода кириллицы
-
-    FILE *f = fopen("data.txt", "r");
-    if (!f) {
-        printf("Ошибка: не удалось открыть файл data.txt\n");
-        return 1;
-    }
-
-    /* === 1 ПЕРВЫЙ ПРОХОД: считаем количество корректных строк === */
+    FILE *f = NULL;
+    humen *arr1 = NULL;
+    humen *arr2 = NULL;
+    humen temp;
+    int i, j;
     int count = 0;
-    char tmp_name[20], tmp_surname[20];
-    int tmp_year;
+    int n = 4;
+    char qwename[20], qwesurname[20];
+    int qweyear;
 
-    // fscanf пропускает пустые строки и считает только полные записи (3 поля)
-    while (fscanf(f, "%19s %19s %d", tmp_name, tmp_surname, &tmp_year) == 3) {
+    setlocale(LC_ALL, "Russian");
+
+    f = fopen("data.txt", "r");
+
+    // 1. ПЕРВЫЙ ПРОХОД: считаем количество записей
+    while (fscanf(f, "%19s %19s %d", qwename, qwesurname, &qweyear) == 3) {
         count++;
     }
 
-    if (count == 0) {
-        printf("Файл пуст или не содержит корректных данных.\n");
-        fclose(f);
-        return 0;
-    }
+    // 2. ВЫДЕЛЯЕМ ПАМЯТЬ СТРОГО ПО КОЛИЧЕСТВУ СТРОК
+    arr1 = (humen*)malloc(count * sizeof(humen));
 
-    printf("Найдено записей: %d\n", count);
+    // 3. ВОЗВРАЩАЕМСЯ В НАЧАЛО ФАЙЛА
+    rewind(f);
 
-    /* === 2 СТРОГОЕ ВЫДЕЛЕНИЕ ПАМЯТИ === */
-    humen *arr = (humen*)malloc(count * sizeof(humen));
-    if (!arr) {
-        printf("Ошибка выделения памяти\n");
-        fclose(f);
-        return 1;
-    }
-
-    /* === 3 ВТОРОЙ ПРОХОД: читаем данные в выделенный массив === */
-    rewind(f); // Возвращаем указатель в начало файла
-    for (int i = 0; i < count; i++) {
-        if (fscanf(f, "%49s %49s %d", arr[i].name, arr[i].surname, &arr[i].birth_year) != 3) {
-            count = i; // На случай, если файл изменился между проходами
-            break;
-        }
+    // 4. ВТОРОЙ ПРОХОД: заполняем массив данными
+    for (i = 0; i < count; i++) {
+        fscanf(f, "%19s %19s %d", qwename, qwesurname, &qweyear);
+        strncpy(arr1[i].name, qwename, 19);
+        arr1[i].name[19] = '\0';
+        strncpy(arr1[i].surname, qwesurname, 19);
+        arr1[i].surname[19] = '\0';
+        arr1[i].birth_year = qweyear;
     }
     fclose(f);
 
-    /* === 4 СОРТИРОВКА (in-place, без arr2) === */
-    for (int i = 0; i < count - 1; i++) {
-        for (int j = 0; j < count - 1 - i; j++) {
-            if (arr[j].birth_year > arr[j + 1].birth_year) {
-                humen temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }
+    arr2 = (humen*)malloc(count * sizeof(humen));
+    
+    memcpy(arr2, arr1, count * sizeof(humen));
+
+    for (i = 0; i < count - 1; i++) {
+        for (j = 0; j < count - 1 - i; j++) {
+            if (arr2[j].birth_year > arr2[j + 1].birth_year) {
+                temp = arr2[j];
+                arr2[j] = arr2[j + 1];
+                arr2[j + 1] = temp;
+            }        }
     }
 
-    /* === 5 ВЫВОД РЕЗУЛЬТАТА === */
-    printf("\nРезультат (%d записей):\n", count);
+    printf("\nÐåçóëüòàò:\n", count);
     printf("----------------------------------------\n");
-    for (int i = 0; i < count; i++) {
-        printf("%-20s %-20s %d\n", arr[i].name, arr[i].surname, arr[i].birth_year);
+    for (i = 0; i < count; i++) {
+        printf("%-15s %-15s %d\n", arr2[i].name, arr2[i].surname, arr2[i].birth_year);
     }
 
-    free(arr);
+    free(arr1);
+    free(arr2);
 
-    printf("\nДля закрытия нажмите Enter...");
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF); // очистка буфера ввода
+    while (getchar() != '\n');
+    printf("\näëÿ çàêðûòèÿ íàæìèå ýíòåð îê...");
     getchar();
 
     return 0;
