@@ -1,44 +1,56 @@
 #include <stdio.h>
-#include <windows.h>
+#include <string.h>
+#include <locale.h>
+#include <stdlib.h>
 
-struct humen {
-    char surname[50];
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+typedef struct {
     char name[50];
-    int year;
-};
+    char surname[50];
+    int birth_year;
+} humen;
 
 int main() {
+    #ifdef _WIN32
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    struct humen arr1[4], arr2[4];
-    struct humen temp;
+    #endif
+    setlocale(LC_ALL, "");
 
-    printf("Vvedi 4 cheloveka (Familiya Imya God):\n");
-    int i;
-    int j;
-    for (i = 0; i < 4; i++) {
-        printf("Chelovek %d: ", i + 1);
-        scanf("%s %s %d", arr1[i].surname, arr1[i].name, &arr1[i].year);
+    const int N = 4;
+    humen arr1[N], arr2[N];
+    int i, j;
+    humen temp;
+
+    for (i = 0; i < N; i++) {
+        printf("Имя: "); scanf("%49s", arr1[i].name);
+        printf("Фамилия: "); scanf("%49s", arr1[i].surname);
+        printf("Год рождения: "); scanf("%d", &arr1[i].birth_year);
     }
 
-    for (i = 0; i < 4; i++) {
-        arr2[i] = arr1[i];
-    }
+    memcpy(arr2, arr1, sizeof(arr1));
 
-    for (i = 0; i < 3; i++) {
-        for (j = 0; j < 3 - i; j++) {
-            if (arr2[j].year > arr2[j+1].year) {
+    for (i = 0; i < N - 1; i++) {
+        for (j = 0; j < N - 1 - i; j++) {
+            if (arr2[j].birth_year > arr2[j + 1].birth_year) {
                 temp = arr2[j];
-                arr2[j] = arr2[j+1];
-                arr2[j+1] = temp;
+                arr2[j] = arr2[j + 1];
+                arr2[j + 1] = temp;
             }
         }
     }
 
-    printf("\nOtsortirovano po godu rozhdeniya:\n");
-    for (i = 0; i < 4; i++) {
-        printf("%s %s %d\n", arr2[i].surname, arr2[i].name, arr2[i].year);
+    printf("\nРезультат:\n");
+    for (i = 0; i < N; i++) {
+        printf("%s %s %d\n", arr2[i].name, arr2[i].surname, arr2[i].birth_year);
     }
+
+    while (getchar() != '\n');
+    printf("\nНажмите Enter для выхода...");
+    getchar();
 
     return 0;
 }
