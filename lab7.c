@@ -21,7 +21,6 @@ int main() {
     humen temp;
     int i, j;
     int count = 0;
-    int n = 4;
     char qwename[20], qwesurname[20];
     int qweyear;
 
@@ -29,18 +28,14 @@ int main() {
 
     f = fopen("data.txt", "r");
 
-    // 1. ПЕРВЫЙ ПРОХОД: считаем количество записей
     while (fscanf(f, "%19s %19s %d", qwename, qwesurname, &qweyear) == 3) {
         count++;
     }
 
-    // 2. ВЫДЕЛЯЕМ ПАМЯТЬ СТРОГО ПО КОЛИЧЕСТВУ СТРОК
     arr1 = (humen*)malloc(count * sizeof(humen));
 
-    // 3. ВОЗВРАЩАЕМСЯ В НАЧАЛО ФАЙЛА
     rewind(f);
 
-    // 4. ВТОРОЙ ПРОХОД: заполняем массив данными
     for (i = 0; i < count; i++) {
         fscanf(f, "%19s %19s %d", qwename, qwesurname, &qweyear);
         strncpy(arr1[i].name, qwename, 19);
@@ -64,7 +59,7 @@ int main() {
             }        }
     }
 
-    printf("\nÐåçóëüòàò:\n", count);
+    printf("\nрезультат:\n", count);
     printf("----------------------------------------\n");
     for (i = 0; i < count; i++) {
         printf("%-15s %-15s %d\n", arr2[i].name, arr2[i].surname, arr2[i].birth_year);
@@ -74,7 +69,7 @@ int main() {
     free(arr2);
 
     while (getchar() != '\n');
-    printf("\näëÿ çàêðûòèÿ íàæìèå ýíòåð îê...");
+    printf("\nнажмите энтер...");
     getchar();
 
     return 0;
