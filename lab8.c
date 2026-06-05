@@ -3,119 +3,120 @@
 #include <string.h>
 #include <locale.h>
 
-#define MAX_PEOPLE 100
-#define NAME_LENGTH 50
+#define DLINA_IMENI 50
+#define MAKS_LUDEY 100
 
 typedef struct {
-    char name[NAME_LENGTH];
-    char surname[NAME_LENGTH];
-    int birthYear;
-    char gender;
-    float height;
-} Person;
+    char imya[DLINA_IMENI];
+    char familiya[DLINA_IMENI];
+    int god_rozhdeniya;
+    char pol;
+    float rost;
+} Chelovek;
 
-void sortByField(Person people[], int count, char *fields) {
-    Person temp;
+void sortirovat_po_polyu(Chelovek lyudi[], int schet, char *polya) {
+    Chelovek vrem;
     int i, j;
-    int sortByYear = 0, sortByName = 0, sortByGender = 0, sortByHeight = 0;
-    int cmpResult;
+    int sort_po_godu = 0, sort_po_imeni = 0, sort_po_polu = 0, sort_po_rostu = 0;
+    int rezultat_sravneniya;
     
-    if (strstr(fields, "year") != NULL || strstr(fields, "год") != NULL) 
-        sortByYear = 1;
-    if (strstr(fields, "name") != NULL || strstr(fields, "имя") != NULL || 
-        strstr(fields, "фамилия") != NULL) 
-        sortByName = 1;
-    if (strstr(fields, "gender") != NULL || strstr(fields, "пол") != NULL) 
-        sortByGender = 1;
-    if (strstr(fields, "height") != NULL || strstr(fields, "рост") != NULL) 
-        sortByHeight = 1;
+    if (strstr(polya, "god") != NULL || strstr(polya, "year") != NULL) 
+        sort_po_godu = 1;
+    if (strstr(polya, "imya") != NULL || strstr(polya, "familiya") != NULL || 
+        strstr(polya, "name") != NULL) 
+        sort_po_imeni = 1;
+    if (strstr(polya, "pol") != NULL || strstr(polya, "gender") != NULL) 
+        sort_po_polu = 1;
+    if (strstr(polya, "rost") != NULL || strstr(polya, "height") != NULL) 
+        sort_po_rostu = 1;
     
-    for (i = 0; i < count - 1; i++) {
-        for (j = 0; j < count - 1 - i; j++) {
-            int shouldSwap = 0;
+    for (i = 0; i < schet - 1; i++) {
+        for (j = 0; j < schet - 1 - i; j++) {
+            int nuzhno_menyat = 0;
             
-            if (sortByYear) {
-                cmpResult = people[j].birthYear - people[j+1].birthYear;
-                if (cmpResult > 0) 
-                    shouldSwap = 1;
-                else if (cmpResult < 0) 
-                    shouldSwap = 0;
+            if (sort_po_godu) {
+                rezultat_sravneniya = lyudi[j].god_rozhdeniya - lyudi[j+1].god_rozhdeniya;
+                if (rezultat_sravneniya > 0) 
+                    nuzhno_menyat = 1;
+                else if (rezultat_sravneniya < 0) 
+                    nuzhno_menyat = 0;
             }
             
-            if (!shouldSwap && sortByName) {
-                cmpResult = strcmp(people[j].surname, people[j+1].surname);
-                if (cmpResult > 0) 
-                    shouldSwap = 1;
-                else if (cmpResult < 0) 
-                    shouldSwap = 0;            }
-            
-            if (!shouldSwap && sortByGender) {
-                if (people[j].gender > people[j+1].gender) 
-                    shouldSwap = 1;
+            if (!nuzhno_menyat && sort_po_imeni) {
+                rezultat_sravneniya = strcmp(lyudi[j].familiya, lyudi[j+1].familiya);
+                if (rezultat_sravneniya > 0) 
+                    nuzhno_menyat = 1;
+                else if (rezultat_sravneniya < 0) 
+                    nuzhno_menyat = 0;
             }
             
-            if (!shouldSwap && sortByHeight) {
-                if (people[j].height > people[j+1].height) 
-                    shouldSwap = 1;
+            if (!nuzhno_menyat && sort_po_polu) {
+                if (lyudi[j].pol > lyudi[j+1].pol) 
+                    nuzhno_menyat = 1;
             }
             
-            if (shouldSwap) {
-                temp = people[j];
-                people[j] = people[j+1];
-                people[j+1] = temp;
+            if (!nuzhno_menyat && sort_po_rostu) {
+                if (lyudi[j].rost > lyudi[j+1].rost) 
+                    nuzhno_menyat = 1;
+            }
+            
+            if (nuzhno_menyat) {
+                vrem = lyudi[j];
+                lyudi[j] = lyudi[j+1];
+                lyudi[j+1] = vrem;
             }
         }
     }
 }
 
 int main() {
-    FILE *file;
-    Person people[MAX_PEOPLE];
-    int count = 0;
-    char sortFields[100];
+    FILE *fayl;
+    char polya_sortirovki[100];
+    Chelovek lyudi[MAKS_LUDEY];
+    int schet = 0;
     int i;
     
     setlocale(LC_ALL, "Russian");
-    // или setlocale(LC_ALL, "ru_RU.UTF-8"); для Linux/Mac
     
-    file = fopen("people.txt", "r");
-    if (file == NULL) {
+    fayl = fopen("people.txt", "r");
+    if (fayl == NULL) {
         printf("Ошибка открытия файла!\n");
         return 1;
     }
     
-    while (fscanf(file, "%s %s %d %c %f", 
-                  people[count].name, 
-                  people[count].surname, 
-                  &people[count].birthYear, 
-                  &people[count].gender, 
-                  &people[count].height) != EOF) {
-        count++;
-        if (count >= MAX_PEOPLE) 
+    while (fscanf(fayl, "%s %s %d %c %f", 
+                  lyudi[schet].imya, 
+                  lyudi[schet].familiya, 
+                  &lyudi[schet].god_rozhdeniya, 
+                  &lyudi[schet].pol, 
+                  &lyudi[schet].rost) != EOF) {
+        schet++;
+        if (schet >= MAKS_LUDEY) 
             break;
     }
-    fclose(file);
+    fclose(fayl);
     
-    printf("Файл загружен. Записей: %d\n", count);    printf("\nВведите поля для сортировки:\n");
-    printf("  year/год - год рождения\n");
-    printf("  name/имя - имя/фамилия\n");
-    printf("  gender/пол - пол\n");
-    printf("  height/рост - рост\n");
+    printf("Файл загружен. Записей: %d\n", schet);
+    printf("\nВведите поля для сортировки:\n");
+    printf("  god/год - год рождения\n");
+    printf("  imya/имя - имя/фамилия\n");
+    printf("  pol/пол - пол\n");
+    printf("  rost/рост - рост\n");
     printf("Можно указать несколько через пробел: ");
     
-    scanf("%s", sortFields);
+    scanf("%s", polya_sortirovki);
     
-    sortByField(people, count, sortFields);
+    sortirovat_po_polyu(lyudi, schet, polya_sortirovki);
     
     printf("\nОтсортированные данные:\n");
     printf("================================================\n");
-    for (i = 0; i < count; i++) {
+    for (i = 0; i < schet; i++) {
         printf("%s %s, %d г., пол: %c, рост: %.2f м\n", 
-               people[i].name, 
-               people[i].surname, 
-               people[i].birthYear, 
-               people[i].gender, 
-               people[i].height);
+               lyudi[i].imya, 
+               lyudi[i].familiya, 
+               lyudi[i].god_rozhdeniya, 
+               lyudi[i].pol, 
+               lyudi[i].rost);
     }
     printf("================================================\n");
     
