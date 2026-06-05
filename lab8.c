@@ -80,7 +80,7 @@ int main() {
     
     fayl = fopen("people.txt", "r");
     if (fayl == NULL) {
-        printf("Ошибка открытия файла!\n");
+        printf("Oshibka otkrytiya fayla!\n");
         return 1;
     }
     
@@ -96,22 +96,22 @@ int main() {
     }
     fclose(fayl);
     
-    printf("Файл загружен. Записей: %d\n", schet);
-    printf("\nВведите поля для сортировки:\n");
-    printf("  god/год - год рождения\n");
-    printf("  imya/имя - имя/фамилия\n");
-    printf("  pol/пол - пол\n");
-    printf("  rost/рост - рост\n");
-    printf("Можно указать несколько через пробел: ");
+    printf("Fayl zagruzhen. Zapisey: %d\n", schet);
+    printf("\nVvedite polya dlya sortirovki:\n");
+    printf("  god/god - god rozhdeniya\n");
+    printf("  imya/imya - imya/familiya\n");
+    printf("  pol/pol - pol\n");
+    printf("  rost/rost - rost\n");
+    printf("Mozhno ukazat' neskol'ko cherez probel: ");
     
     scanf("%s", polya_sortirovki);
     
     sortirovat_po_polyu(lyudi, schet, polya_sortirovki);
     
-    printf("\nОтсортированные данные:\n");
+    printf("\nOtsortirovannye dannye:\n");
     printf("================================================\n");
     for (i = 0; i < schet; i++) {
-        printf("%s %s, %d г., пол: %c, рост: %.2f м\n", 
+        printf("%s %s, %d g., pol: %c, rost: %.2f m\n", 
                lyudi[i].imya, 
                lyudi[i].familiya, 
                lyudi[i].god_rozhdeniya, 
